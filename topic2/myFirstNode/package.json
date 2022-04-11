@@ -1,0 +1,11 @@
+{
+  "name": "myfirstnode",
+  "version": "1.0.0",
+  "description": "Learning Project for UoLCS",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC"
+}
