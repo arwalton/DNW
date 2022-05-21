@@ -21,4 +21,13 @@ module.exports = function(app) {
         "<br>" +
         "This is the result of the search.");
     });
+
+    app.get("/register",function(req, res) {
+        res.render("register.html");
+    });
+
+    app.post("/registered",function(req,res){
+        //saving data in database
+        res.send("Hello " + req.body.first + " " + req.body.last + ", you are now registered!");
+    });
 }
