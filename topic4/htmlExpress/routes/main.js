@@ -28,6 +28,7 @@ module.exports = function(app) {
 
     app.post("/registered",function(req,res){
         //saving data in database
-        res.send("Hello " + req.body.first + " " + req.body.last + ", you are now registered!");
+        res.send("Hello " + req.body.first + " " + req.body.last + ", you are now registered!" + "<br>" +
+        "We will send you an email to your email address: " + req.body.email);
     });
 }
