@@ -4,7 +4,8 @@
   "description": "The June 2022 Midterm assignment for UOLcs Databases, networks, and the web class",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "start": "nodemon index.js"
   },
   "author": "Adam Walton",
   "license": "ISC",
@@ -12,5 +13,8 @@
     "body-parser": "^1.20.0",
     "ejs": "^3.1.8",
     "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
   }
 }
