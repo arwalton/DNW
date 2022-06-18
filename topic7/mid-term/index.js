@@ -10,6 +10,9 @@ app.use(function (req, res, next) {
   next();
 });
 
+// Add a static folder called public to App
+app.use(express.static( "public" ));
+
 // Get the routes from the main.js file in the routes directory
 require("./routes/main")(app);
 
