@@ -18,14 +18,14 @@ module.exports = (app) => {
             if(err){
                 res.redirect("/");
             }
-            console.log(result);
-            const names = result.map(item =>{
+            const devices = result.map(item =>{
                 let myStr = JSON.stringify(item);
                 let json = JSON.parse(myStr);
-                return json.deviceName;
-            })
-            console.log(names);
-            })
-        res.render("new-device.ejs")
+                return json;
+            })      
+            res.render("new-device.ejs", {
+                devices: devices
+            });
+        })
     });
 }

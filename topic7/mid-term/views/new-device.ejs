@@ -10,7 +10,15 @@
 
     <main>
         <h1>Welcome to the New Device Page</h1>
-        <p>This is a basic template with ejs</p>
+        <p>These are the devices that are already registered:</p>
+        <ul>
+            <% devices.forEach((device) => { %>
+                <li>
+                    <p>Name: <%= device.deviceName %></p>
+                    <p>Id: <%= device.deviceId %></p>
+                </li>
+            <% }); %>
+        </ul>
     </main>
 
     <footer>
