@@ -1,7 +1,25 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-
 const app = express();
+
+// Set up database
+const mysql = require('mysql');
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'midterm',
+  password: '%wqAWjXEZtJBq@Pa@S86',
+  database: 'mySmartHome'
+});
+
+// Connect to the database
+db.connect((err)=>{
+  if(err){
+    throw err;
+  }
+  console.log("Connected to database");
+});
+global.db = db;
+
 const port = 8089;
 
 // Add GNU Terry Pratchett to site
