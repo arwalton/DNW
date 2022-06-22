@@ -33,6 +33,12 @@
                 <p>There was a problem. Please reload the page.</p>
             <% } %>
             </select>
+            <% if(functions != undefined || functions != null){ %>
+               <% functions.forEach((func) => { %>
+                    <% let path = './partials/function' + func.functionId; %>
+                    <%- include(path) %>
+                <% }); %>                
+            <% }; %>
         </form>
     </main>
 
