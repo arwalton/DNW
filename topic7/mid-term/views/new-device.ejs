@@ -12,13 +12,18 @@
         <h1>Welcome to the New Device Page</h1>
         <p>These are the devices that are already registered:</p>
         <ul>
-            <% devices.forEach((device) => { %>
+            <% if(devices != undefined || devices != null){
+                devices.forEach((device) => { %>
                 <li>
                     <p>Name: <%= device.deviceName %></p>
                     <p>Id: <%= device.deviceId %></p>
                 </li>
-            <% }); %>
+            <% })}; %>
         </ul>
+        <h2>Add a device</h2>
+        <form>
+
+        </form>
     </main>
 
     <footer>

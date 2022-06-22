@@ -8,7 +8,8 @@ const db = mysql.createConnection({
   host: 'localhost',
   user: 'midterm',
   password: '%wqAWjXEZtJBq@Pa@S86',
-  database: 'mySmartHome'
+  database: 'mySmartHome',
+  multipleStatements: true
 });
 
 // Connect to the database
