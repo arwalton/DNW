@@ -22,7 +22,17 @@
         </ul>
         <h2>Add a device</h2>
         <form>
-
+            <label for="name">Give your device a name</label>
+            <input type="text" id="name" name="name">
+            <% if(types != undefined || types != null){ %>
+                <label for="type">Select the type of device</label>
+                <select id="type" name="type">
+                    <% types.forEach((type) => { %>
+                        <option value="{<%= type.typeName %>}"><%= type.typeName %></option>
+            <% })}else{ %>
+                <p>There was a problem. Please reload the page.</p>
+            <% } %>
+            </select>
         </form>
     </main>
 
