@@ -56,4 +56,14 @@ module.exports = (app) => {
              });
         })
     });
+
+    //Success page when device has been successfully added
+    app.post("/device-added", (req,res)=>{
+        console.log("Here is where we will save the data in the database");
+        
+        console.log(req.body);
+        res.render("device-added.ejs",{
+
+        });
+    })
 }

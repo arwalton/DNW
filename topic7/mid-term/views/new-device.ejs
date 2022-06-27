@@ -47,10 +47,15 @@
             <% })}; %>
         </ul>
         <h2>Add a device</h2>
-        <form action="">
+        <form method="POST" action="/device-added">
             <div id="device_name">
-                <label for="device_name">Give your device a name</label>
-                <input type="text" name="device_name">
+                <label for="device_name">Give your device a name (required)</label>
+                <input type="text"
+                       name="device_name"
+                       minlength="3"
+                       maxlength="100"
+                       required
+                >
             </div>
 
             <div id="device_type">
@@ -149,7 +154,7 @@
             </div>
 
             <div id="submit" hidden>
-                <input type="submit">
+                <input type="submit" value="Ok">
             </div>
 
         </form>
