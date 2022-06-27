@@ -1,6 +1,33 @@
 <!DOCTYPE html>
 <head>
     <%- include('./partials/head'); %>
+    <% let typeToFuncPass =  typeToFunction; %> <!-- Variable created by EJS -->
+    <script type="text/javascript"> 
+        let typeToFunc = JSON.parse("<%= typeToFuncPass %>".replaceAll("&#34;","\"")); //Passing variable to front end
+    </script>
+    <script type="text/javascript">
+        function showOptions(value) {
+            // Hide currently visible options
+            hideOptions();
+            // Shop applicable options for selection
+            if(value !== ""){
+                typeToFunc[value].forEach((func) => {
+                   document.getElementById(func).hidden = false;
+                })
+                document.getElementById("submit").hidden = false;
+            }
+        }
+
+        // Hide all visible options for a device.
+        function hideOptions(){
+            Object.values(typeToFunc).forEach((value)=>{
+                value.forEach((val)=>{
+                    document.getElementById(val).hidden = true;
+                })
+            })
+            document.getElementById("submit").hidden = true;
+        }
+    </script>
 </head>
 
 <body>
@@ -16,29 +43,115 @@
                 devices.forEach((device) => { %>
                 <li>
                     <p>Name: <%= device.deviceName %></p>
-                    <p>Id: <%= device.deviceId %></p>
                 </li>
             <% })}; %>
         </ul>
         <h2>Add a device</h2>
-        <form>
-            <label for="name">Give your device a name</label>
-            <input type="text" id="name" name="name">
+        <form action="">
+            <div id="device_name">
+                <label for="device_name">Give your device a name</label>
+                <input type="text" name="device_name">
+            </div>
+
+            <div id="device_type">
             <% if(types != undefined || types != null){ %>
-                <label for="type">Select the type of device</label>
-                <select id="type" name="type">
+                <label for="device_type">Select the type of device</label>
+                <select name="device_type" onchange="showOptions(this.value)">
+                    <option value=""></option>
                     <% types.forEach((type) => { %>
-                        <option value="{<%= type.typeName %>}"><%= type.typeName %></option>
+                        <option value="<%= type.typeName %>"><%= type.typeName %></option>
+
             <% })}else{ %>
                 <p>There was a problem. Please reload the page.</p>
             <% } %>
             </select>
-            <% if(functions != undefined || functions != null){ %>
-               <% functions.forEach((func) => { %>
-                    <% let path = './partials/function' + func.functionId; %>
-                    <%- include(path) %>
-                <% }); %>                
-            <% }; %>
+            </div>
+
+
+            <div id="on_off" hidden>
+            <label for="on_off">On/Off</label>
+            <input type="checkbox" name="on_off">
+            </div>
+
+            <div id="living_temperature" hidden>
+            <label for="living_temperature">Desired Temperature &#176;C</label>
+            <input type="number"
+                   name="living_temperature"
+                   min="<%= functions[1].rangeStart %>"
+                   max="<%= functions[1].rangeEnd %>"
+            >
+            </div>
+
+            <div id="open_closed" hidden>
+            <label for="open_closed">Open/Closed</label>
+            <input type="checkbox" name="open_closed">
+            </div>
+
+            <div id="fridge_temp"hidden>
+            <label for="fridge_temp">Desired Temperature &#176;C</label>
+            <input type="number"
+                   name="fridge_temp"
+                   min="<%= functions[3].rangeStart %>"
+                   max="<%= functions[3].rangeEnd %>"
+            >
+            </div>
+
+            <div id="freezer_temp" hidden>
+            <label for="freezer_temp">Desired Temperature &#176;C</label>
+            <input type="number"
+                   name="freezer_temp"
+                   min="<%= functions[4].rangeStart %>"
+                   max="<%= functions[4].rangeEnd %>"
+            >
+            </div>
+
+            <div id="volume" hidden>
+            <label for="volume">Volume %</label>
+            <input type="number"
+                   name="volume"
+                   min="<%= functions[5].rangeStart %>"
+                   max="<%= functions[5].rangeEnd %>"
+            >
+            </div>
+
+            <div id="am_fm" hidden>
+            <label for="am_fm">AM/FM</label>
+            <input type="checkbox" name="am_fm">
+            </div>
+            
+            <div id="station" hidden>
+            <label for="station">Station</label>
+            <input type="number"
+                   name="station"
+                   min="<%= functions[7].rangeStart %>"
+                   max="<%= functions[7].rangeEnd %>"
+                   step="0.1"
+            >
+            </div>
+
+            <div id="channel" hidden>
+            <label for="channel">Channel</label>
+            <input type="number"
+                   name="channel"
+                   min="<%= functions[8].rangeStart %>"
+                   max="<%= functions[8].rangeEnd %>"
+            >
+            </div>
+
+            <div id="watts" hidden>
+            <label for="watts">watts</label>
+            <input type="number"
+                   name="watts"
+                   min="<%= functions[9].rangeStart %>"
+                   max="<%= functions[9].rangeEnd %>"
+                   step="25"
+            >
+            </div>
+
+            <div id="submit" hidden>
+                <input type="submit">
+            </div>
+
         </form>
     </main>
 

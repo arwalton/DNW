@@ -35,21 +35,24 @@ module.exports = (app) => {
                 let json = JSON.parse(myStr);
                 return json;
             })
-            //Create map for types and functions
-            const typeToFunction = new Map();
+            //Create a map for types and functions
+            const typeToFunctionMap = new Map();
             data[3].forEach((item) => {
-                if(typeToFunction.has(item.typeName)){
-                typeToFunction.set(item.typeName, [...typeToFunction.get(item.typeName), item.functionName]);
+                // Format funcName to be used as class identifiers later
+                funcName = item.functionName.toLowerCase().replaceAll(/[\s\/]/g,"_");
+                if(typeToFunctionMap.has(item.typeName)){
+                typeToFunctionMap.set(item.typeName, [...typeToFunctionMap.get(item.typeName), funcName]);
                 }else{
-                    typeToFunction.set(item.typeName,[item.functionName]);
+                    typeToFunctionMap.set(item.typeName,[funcName]);
                 }
             });
+            const typeToFunction = Object.fromEntries(typeToFunctionMap);
             // Render page passing data as props
             res.render("new-device.ejs", {
                 devices: data[0],
                 types: data[1],
                 functions: data[2],
-                typeToFunction: typeToFunction
+                typeToFunction: JSON.stringify(Object.fromEntries(typeToFunctionMap))
              });
         })
     });
