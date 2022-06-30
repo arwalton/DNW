@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<head>
+    <%- include('./partials/head'); %>
+</head>
+
+<body>
+    <header>
+        <%- include('./partials/header'); %>
+    </header>
+
+    <main>
+        <h1>Device status page</h1>
+        <h2>Selected Device: <%= functions[0].deviceName %></h2>
+        <% functions.forEach((func)=>{ %>
+            <p>Setting: <%= func.functionName %></p>
+            <% if(func.functionName == "on_off"){ %>
+                <p>Value: <%= (func.value==1 ? "On" : "Off") %></p>
+            <% }else{ %>
+            <p>Value: <%= func.value %> </p>
+        <% }}) %>
+        
+
+
+    </main>
+
+    <footer>
+        <%- include('./partials/footer'); %>
+    </footer>
+
+</body>

@@ -63,14 +63,14 @@ module.exports = (app) => {
     ///////////////////////////////////////////
     //Success page when device has been successfully added route
     app.post("/device-added", (req,res)=>{
-        console.log("Here is where we will save the data in the database");
-        console.log(req.body);
+        // Create sql query
         const functions = [];
         if(!req.body['on_off']){
             functions.push('on_off', 0);
         }else{
             functions.push('on_off', 1);
         }
+        // Get device functions and values
         Object.keys(req.body).forEach(key => {
             if(key != 'device_name' && key != 'device_type' && key != 'on_off'){
                 if(req.body[key] != ''){
@@ -79,29 +79,82 @@ module.exports = (app) => {
             }
         });
 
+        // Create sql query string to make new device
         let sqlQuery = "INSERT INTO devices (deviceName, typeId)" +
                         "VALUES (\""+ req.body.device_name +
                         "\",(SELECT typeId FROM types WHERE typeName=\"" + req.body.device_type +"\"));"
         
+        //Create query strings to add device functions
         for(let i=0; i<functions.length; i+=2){
             sqlQuery += "INSERT INTO deviceToFunctionMap(deviceId, functionId, value) " +
                         "VALUES ((SELECT (deviceId) FROM devices WHERE deviceName = \'" + req.body.device_name + "\')," +
                         "(SELECT (functionId) FROM functions WHERE functionName = \'" + functions[i] + "\')," +
                         functions[i + 1]+ ");"
         }
-        console.log(sqlQuery);
-
         try{
         // Execute query
         db.query(sqlQuery,(err, result)=>{
             if(err){
                 res.redirect(404, "/");
             }else{
-            res.render("device-added.ejs");
+                res.render("device-added.ejs");
             }
         })
         }catch(e){
             console.log("Error: " + e);
         } 
+    })
+
+    ////////////////////////////////////
+    // Status-selector route
+    app.get("/status-selector", (req,res)=>{
+        // Query for existing devices
+        let sqlQuery = "SELECT * FROM devices;";
+
+        // Execute query
+        db.query(sqlQuery, (err,result) => {
+            if(err){
+                res.redirect("/");
+            }
+            // Convert data to useable format
+            const data = result.map(item =>{
+                let myStr = JSON.stringify(item);
+                let json = JSON.parse(myStr);
+                return json;
+            })
+            res.render("status-selector.ejs",{
+                devices: data
+            });
+        });
+
+    })
+
+    ////////////////////////////////////
+    // Device-status route
+    app.get("/device-status", (req,res)=>{
+        const deviceId = req.query.devices;
+        // Query for requested device and associated functions
+        let sqlQuery = "SELECT devices.deviceName, deviceToFunctionMap.value, functions.functionName " +
+                    "FROM ((devices " +
+                    "INNER JOIN deviceToFunctionMap " +
+                    "ON devices.deviceId = deviceToFunctionMap.deviceId) " +
+                    "INNER JOIN functions " + 
+                    "ON deviceToFunctionMap.functionId = functions.functionId) " +
+                    "WHERE devices.deviceId = " + deviceId + ";";
+
+        db.query(sqlQuery, (err,result) => {
+            if(err){
+                res.redirect("/");
+            }
+            // Convert data to useable format
+            const data = result.map(item =>{
+                let myStr = JSON.stringify(item);
+                let json = JSON.parse(myStr);
+                return json;
+            })
+            res.render("device-status.ejs",{
+                functions: data
+            });
+        });
     })
 }

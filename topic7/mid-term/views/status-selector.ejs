@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<head>
+    <%- include('./partials/head'); %>
+</head>
+
+<body>
+    <header>
+        <%- include('./partials/header'); %>
+    </header>
+
+    <main>
+        <h1>Which device would you like to view?</h1>
+
+        <form method="GET" action="/device-status">
+            <div id="device_selector">
+                <% if(devices != undefined || devices != null){ %>
+                    <label for="devices">Select a device</label>
+                    <select name="devices">
+                        <option value=""></option>
+                        <% devices.forEach((device)=>{ %>
+                            <option value="<%= device.deviceId %>"><%= device.deviceName %></option>
+                        <% }) %>    
+                    </select>
+                    <div id="submit">
+                        <input type="submit" value="Ok">
+                    </div>
+
+                <% }else{ %>
+                        <p>You haven't added any devices to the DNW Smart Home Control Panel</p>
+                <% } %>
+            </div>
+        </form>
+
+    </main>
+
+    <footer>
+        <%- include('./partials/footer'); %>
+    </footer>
+
+</body>
