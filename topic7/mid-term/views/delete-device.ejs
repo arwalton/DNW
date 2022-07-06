@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+    <%- include('./partials/head'); %>
+    <script>
+        const checker = ()=>{
+            if(window.confirm("Are you sure you want to delete this device?")){
+                document.getElementById("delete_device").submit();
+            }else{
+                return;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <%- include('./partials/header'); %>
+    </header>
+
+    <main>
+        <h1>Which device would you like to delete?</h1>
+
+        <form method="POST" action="/device-deleted" id="delete_device">
+            <div id="device_selector">
+                <% if(devices != undefined || devices != null){ %>
+                    <label for="devices">Select a device</label>
+                    <select name="devices">
+                        <option value=""></option>
+                        <% devices.forEach((device)=>{ %>
+                            <option value="<%= device.deviceId %>"><%= device.deviceName %></option>
+                        <% }) %>    
+                    </select>
+                    <div id="submit">
+                        <button type="button" form="delete_device" onclick="checker()">
+                            Delete
+                        </button>
+                    </div>
+
+                <% }else{ %>
+                        <p>You haven't added any devices to the DNW Smart Home Control Panel</p>
+                <% } %>
+            </div>
+        </form>
+
+    </main>
+
+    <footer>
+        <%- include('./partials/footer'); %>
+    </footer>
+
+</body>

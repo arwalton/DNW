@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<head>
+    <%- include('./partials/head'); %>
+    <% let deviceToFunctionPass =  deviceToFunction; %> <!-- Variable created by EJS -->
+
+    <script type="text/javascript">
+        let deviceToFunc = JSON.parse("<%= deviceToFunctionPass %>".replaceAll("&#34;","\""));
+    </script>
+
+    <script type="text/javascript">
+        function showOptions(value){
+            // Hide currently visible options
+            hideOptions();
+            // Shop applicable options for selection
+            if(value !== ""){
+                deviceToFunc[value].forEach((func) => {
+                    document.getElementById(func).hidden = false;
+                })
+                document.getElementById("submit").hidden = false;
+            }
+        }
+
+        // Hide all visible options for a device.
+        function hideOptions(){
+            Object.values(deviceToFunc).forEach((value)=>{
+                value.forEach((val)=>{
+                    document.getElementById(val).hidden = true;
+                })
+            })
+            document.getElementById("submit").hidden = true;
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <%- include('./partials/header'); %>
+    </header>
+
+    <main>
+        <h1>Welcome to the Device Control Page</h1>
+        <p>Here you can update the settings on your devices.</p>
+
+        <h2>Select a device</h2>
+        <form method="POST" action="/device-updated">
+            <div id="device">
+            <% if(devices != undefined || devices != null){ %>
+                <label for="device_name">Select the device</label>
+                <select name="device_name" onchange="showOptions(this.value)">
+                    <option value=""></option>
+                    <% const seen = {};
+                    devices.filter((device)=>{
+                        return seen.hasOwnProperty(device.deviceName) ? false : (seen[device.deviceName] = true);
+                    }).forEach((device) => { %>
+                        <option value="<%= device.deviceName %>"><%= device.deviceName %></option>
+
+            <% })}else{ %>
+                <p>There was a problem. Please reload the page.</p>
+            <% } %>
+            </select>
+            </div>
+
+
+            <div id="on_off" hidden>
+            <label for="on_off">On/Off</label>
+            <input type="checkbox" name="on_off">
+            </div>
+
+            <div id="living_temperature" hidden>
+            <label for="living_temperature">Desired Temperature &#176;C</label>
+            <input type="number"
+                   name="living_temperature"
+                   min="<%= functions[1].rangeStart %>"
+                   max="<%= functions[1].rangeEnd %>"
+            >
+            </div>
+
+            <div id="open_closed" hidden>
+            <label for="open_closed">Open/Closed</label>
+            <input type="checkbox" name="open_closed">
+            </div>
+
+            <div id="fridge_temp"hidden>
+            <label for="fridge_temp">Desired Temperature &#176;C</label>
+            <input type="number"
+                   name="fridge_temp"
+                   min="<%= functions[3].rangeStart %>"
+                   max="<%= functions[3].rangeEnd %>"
+            >
+            </div>
+
+            <div id="freezer_temp" hidden>
+            <label for="freezer_temp">Desired Temperature &#176;C</label>
+            <input type="number"
+                   name="freezer_temp"
+                   min="<%= functions[4].rangeStart %>"
+                   max="<%= functions[4].rangeEnd %>"
+            >
+            </div>
+
+            <div id="volume" hidden>
+            <label for="volume">Volume %</label>
+            <input type="number"
+                   name="volume"
+                   min="<%= functions[5].rangeStart %>"
+                   max="<%= functions[5].rangeEnd %>"
+            >
+            </div>
+
+            <div id="am_fm" hidden>
+            <label for="am_fm">AM/FM</label>
+            <input type="checkbox" name="am_fm">
+            </div>
+            
+            <div id="station" hidden>
+            <label for="station">Station</label>
+            <input type="number"
+                   name="station"
+                   min="<%= functions[7].rangeStart %>"
+                   max="<%= functions[7].rangeEnd %>"
+                   step="0.1"
+            >
+            </div>
+
+            <div id="channel" hidden>
+            <label for="channel">Channel</label>
+            <input type="number"
+                   name="channel"
+                   min="<%= functions[8].rangeStart %>"
+                   max="<%= functions[8].rangeEnd %>"
+            >
+            </div>
+
+            <div id="watts" hidden>
+            <label for="watts">watts</label>
+            <input type="number"
+                   name="watts"
+                   min="<%= functions[9].rangeStart %>"
+                   max="<%= functions[9].rangeEnd %>"
+                   step="25"
+            >
+            </div>
+
+            <div id="submit" hidden>
+                <input type="submit" value="Ok">
+            </div>
+
+        </form>
+    </main>
+
+    <footer>
+        <%- include('./partials/footer'); %>
+    </footer>
+
+</body>
