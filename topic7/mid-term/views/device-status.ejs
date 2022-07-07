@@ -10,20 +10,23 @@
         <h1 class="is-size-1 has-text-centered">Device status page</h1>
         <div class="columns mt-4">
             <div class="column"></div>
-            <div class="column is-four-fifths box">
-                <div class="block">
-                    <h2>Selected Device: <%= functions[0].deviceName %></h2>
+            <div class="column is-four-fifths">
+                <div class="panel">
+                    <h2 class="block has-text-info-dark panel-heading"><%= functions[0].deviceName %></h2>
                     <% functions.forEach((func)=>{ %>
-                        <p>Setting: <%= func.functionName %></p>
+                        <div class="panel-block has-background-info-light">
+                        <p><%= func.functionName %>:&nbsp</p>
                         <% if(func.functionName == "on_off"){ %>
-                            <p>Value: <%= (func.value==1 ? "On" : "Off") %></p>
+                            <p><%= (func.value==1 ? "On" : "Off") %></p>
                         <% }else if(func.functionName == "open_closed"){ %>
-                            <p>Value: <%= (func.value==1 ? "Open" : "Closed") %></p>
+                            <p><%= (func.value==1 ? "Open" : "Closed") %></p>
                         <% }else if(func.functionName == "am_fm"){ %>
-                            <p>Value: <%= (func.value==1 ? "AM" : "FM") %></p>
+                            <p><%= (func.value==1 ? "AM" : "FM") %></p>
                         <% }else{ %>
-                            <p>Value: <%= func.value %> </p>
-                    <% }}) %>
+                            <p><%= func.value %> </p>
+                        <% } %>
+                        </div>
+                    <% }) %>
                 </div>
             </div>
             <div class="column"></div>

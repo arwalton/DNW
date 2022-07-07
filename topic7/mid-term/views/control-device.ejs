@@ -59,11 +59,11 @@
         <h1 class="is-size-1 has-text-centered">Welcome to the Device Control Page</h1>
         <div class="columns mt-4">
             <div class="column"></div>
-            <div class="column is-four-fifths box">
-                <div class="block">
-                    <p class="is-size-4">Here you can update the settings on your devices.</p>
+            <div class="column is-four-fifths">
+                <div class="panel">
+                    <p class="panel-heading">Here you can update the settings on your devices.</p>
 
-                    <form method="POST" action="/device-updated">
+                    <form method="POST" action="/device-updated" class="p-3">
                         <div id="device" class="field">
                         <% if(devices != undefined || devices != null){ %>
                             <label for="device_name" class="is-size-5">Select the device</label>

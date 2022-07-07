@@ -11,20 +11,22 @@
 
         <div class="columns mt-4">
             <div class="column"></div>
-            <div class="column is-four-fifths box">
-                <div class="block">
-                    <form method="GET" action="/device-status">
+            <div class="column is-four-fifths">
+                <div class="panel">
+                    <h2 class="panel-heading">Select a device</h2>
+                    <form method="GET" action="/device-status" class="p-3">
                         <div id="device_selector">
                             <% if(devices != undefined || devices != null){ %>
-                                <label for="devices">Select a device</label>
-                                <select name="devices">
+                                <label for="devices" hidden></label>
+                                <br>
+                                <select name="devices" class="select is-medium field">
                                     <option value=""></option>
                                     <% devices.forEach((device)=>{ %>
                                         <option value="<%= device.deviceId %>"><%= device.deviceName %></option>
                                     <% }) %>    
                                 </select>
-                                <div id="submit">
-                                    <input type="submit" value="Ok">
+                                <div id="submit field">
+                                    <input type="submit" value="Ok" class="button is-primary">
                                 </div>
 
                             <% }else{ %>

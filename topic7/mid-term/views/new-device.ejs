@@ -12,7 +12,17 @@
             // Shop applicable options for selection
             if(value !== ""){
                 typeToFunc[value].forEach((func) => {
-                   document.getElementById(func).hidden = false;
+                    let funcSelect = func;
+                    if(func=="on_off"){
+                        funcSelect = "on_switch"
+                    }
+                    if(func=="open_closed"){
+                        funcSelect = "open"
+                    }
+                    if(func=="am_fm"){
+                        funcSelect = "modulation"
+                    }
+                   document.getElementById(funcSelect).hidden = false;
                 })
                 document.getElementById("submit").hidden = false;
             }
@@ -22,7 +32,17 @@
         function hideOptions(){
             Object.values(typeToFunc).forEach((value)=>{
                 value.forEach((val)=>{
-                    document.getElementById(val).hidden = true;
+                    let valSelect = val;
+                    if(val == "on_off"){
+                        valSelect = "on_switch"
+                    }
+                    if(val == "open_closed"){
+                        valSelect = "open"
+                    }
+                    if(val == "am_fm"){
+                        valSelect = "modulation"
+                    }
+                    document.getElementById(valSelect).hidden = true;
                 })
             })
             document.getElementById("submit").hidden = true;
@@ -38,32 +58,34 @@
         <div class="columns mt-4">
             <div class="column"></div>
             <div class="column is-four-fifths box">
-                <div class="block">
-                    <p>These are the devices that are already registered:</p>
-                    <ul>
-                        <% if(devices != undefined || devices != null){
-                            devices.forEach((device) => { %>
-                            <li>
-                                <p>Name: <%= device.deviceName %></p>
-                            </li>
-                        <% })}; %>
-                    </ul>
-                    <h2>Add a device</h2>
-                    <form method="POST" action="/device-added">
+                <div class="panel">
+                    <p class="panel-heading">These are the devices that are already registered:</p>
+                    <% if(devices != undefined || devices != null){
+                        devices.forEach((device) => { %>
+                        <div class="panel-block">
+                            <p><%= device.deviceName %></p>
+                        </div>
+                    <% })}; %>
+                    </div>
+                    <div class="block panel">
+                    <h2 class="panel-heading">Add a device</h2>
+                    <form method="POST" action="/device-added" class="p-3">
                         <div id="device_name">
-                            <label for="device_name">Give your device a name (required)</label>
+                            <label for="device_name" class="is-size-5">Give your device a name (required)</label>
                             <input type="text"
                                 name="device_name"
                                 minlength="3"
                                 maxlength="100"
+                                class="input is-normal"
                                 required
                             >
                         </div>
 
-                        <div id="device_type">
+                        <div id="device_type" class="field">
                         <% if(types != undefined || types != null){ %>
-                            <label for="device_type">Select the type of device</label>
-                            <select name="device_type" onchange="showOptions(this.value)">
+                            <label for="device_type" class="is-size-5">Select the type of device</label>
+                            <br>
+                            <select name="device_type" onchange="showOptions(this.value)" class="select is-medium">
                                 <option value=""></option>
                                 <% types.forEach((type) => { %>
                                     <option value="<%= type.typeName %>"><%= type.typeName %></option>
@@ -75,92 +97,93 @@
                         </div>
 
 
-                        <div id="on_off" hidden>
-                        <label for="on_off">On/Off</label>
-                        <input type="checkbox" name="on_off">
-                        </div>
+                    <div  id="on_switch" class="field" hidden>
+                        <input id="on_off" type="checkbox" class="switch" name="on_off">
+                        <label for="on_off">On</label>
+                    </div>
 
-                        <div id="living_temperature" hidden>
-                        <label for="living_temperature">Desired Temperature &#176;C</label>
+                    <div id="living_temperature" class="field" hidden>
                         <input type="number"
                             name="living_temperature"
                             min="<%= functions[1].rangeStart %>"
                             max="<%= functions[1].rangeEnd %>"
                         >
-                        </div>
+                        <label for="living_temperature">Desired Temperature &#176;C</label>
+                    </div>
 
-                        <div id="open_closed" hidden>
-                        <label for="open_closed">Open/Closed</label>
-                        <input type="checkbox" name="open_closed">
-                        </div>
+                    <div id="open" class="field" hidden>
+                        <input id="open_closed" type="checkbox" class="switch" name="open_closed">
+                        <label for="open_closed">Open</label>
+                    </div>
 
-                        <div id="fridge_temp"hidden>
-                        <label for="fridge_temp">Desired Temperature &#176;C</label>
+                    <div id="fridge_temp" class="field" hidden>
                         <input type="number"
                             name="fridge_temp"
                             min="<%= functions[3].rangeStart %>"
                             max="<%= functions[3].rangeEnd %>"
                         >
-                        </div>
+                        <label for="fridge_temp">Desired Temperature &#176;C</label>
+                    </div>
 
-                        <div id="freezer_temp" hidden>
-                        <label for="freezer_temp">Desired Temperature &#176;C</label>
+                    <div id="freezer_temp" class="field" hidden>
                         <input type="number"
                             name="freezer_temp"
                             min="<%= functions[4].rangeStart %>"
                             max="<%= functions[4].rangeEnd %>"
                         >
-                        </div>
+                        <label for="freezer_temp">Desired Temperature &#176;C</label>
+                    </div>
 
-                        <div id="volume" hidden>
-                        <label for="volume">Volume %</label>
+                    <div id="volume" class="field" hidden>
                         <input type="number"
                             name="volume"
                             min="<%= functions[5].rangeStart %>"
                             max="<%= functions[5].rangeEnd %>"
                         >
-                        </div>
+                        <label for="volume">Volume %</label>
+                    </div>
 
-                        <div id="am_fm" hidden>
+                    <div id="modulation" class="field" hidden>
+                        <input id="am_fm" type="checkbox" class="switch" name="am_fm">
                         <label for="am_fm">AM/FM</label>
-                        <input type="checkbox" name="am_fm">
-                        </div>
-                        
-                        <div id="station" hidden>
-                        <label for="station">Station</label>
+                    </div>
+                    
+                    <div id="station" class="field" hidden>
                         <input type="number"
                             name="station"
                             min="<%= functions[7].rangeStart %>"
                             max="<%= functions[7].rangeEnd %>"
                             step="0.1"
                         >
-                        </div>
+                        <label for="station">Station</label>
+                    </div>
 
-                        <div id="channel" hidden>
-                        <label for="channel">Channel</label>
+                    <div id="channel" class="field" hidden>
                         <input type="number"
                             name="channel"
                             min="<%= functions[8].rangeStart %>"
                             max="<%= functions[8].rangeEnd %>"
                         >
-                        </div>
+                        <label for="channel">Channel</label>
+                    </div>
 
-                        <div id="watts" hidden>
-                        <label for="watts">watts</label>
+                    <div id="watts" class="field" hidden>
                         <input type="number"
                             name="watts"
                             min="<%= functions[9].rangeStart %>"
                             max="<%= functions[9].rangeEnd %>"
                             step="25"
                         >
-                        </div>
+                        <label for="watts">watts</label>
+                    </div>
 
-                        <div id="submit" hidden>
-                            <input type="submit" value="Ok">
-                        </div>
+                    <div id="submit" class="field" hidden>
+                        <input type="submit" value="Ok" class="button is-primary">
+                    </div>
 
                     </form>
                 </div>
+            
             </div>
             <div class="column"></div>
         </div>
