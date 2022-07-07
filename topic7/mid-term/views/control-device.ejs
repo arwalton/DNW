@@ -14,7 +14,17 @@
             // Shop applicable options for selection
             if(value !== ""){
                 deviceToFunc[value].forEach((func) => {
-                    document.getElementById(func).hidden = false;
+                    let funcSelect = func;
+                    if(func=="on_off"){
+                        funcSelect = "on_switch"
+                    }
+                    if(func=="open_closed"){
+                        funcSelect = "open"
+                    }
+                    if(func=="am_fm"){
+                        funcSelect = "modulation"
+                    }
+                    document.getElementById(funcSelect).hidden = false;
                 })
                 document.getElementById("submit").hidden = false;
             }
@@ -24,7 +34,17 @@
         function hideOptions(){
             Object.values(deviceToFunc).forEach((value)=>{
                 value.forEach((val)=>{
-                    document.getElementById(val).hidden = true;
+                    let valSelect = val;
+                    if(val == "on_off"){
+                        valSelect = "on_switch"
+                    }
+                    if(val == "open_closed"){
+                        valSelect = "open"
+                    }
+                    if(val == "am_fm"){
+                        valSelect = "modulation"
+                    }
+                    document.getElementById(valSelect).hidden = true;
                 })
             })
             document.getElementById("submit").hidden = true;
@@ -32,124 +52,131 @@
     </script>
 </head>
 
-<body>
-    <header>
-        <%- include('./partials/header'); %>
-    </header>
+<body class="has-navbar-fixed-top">
+    <%- include('./partials/header'); %>
 
     <main>
-        <h1>Welcome to the Device Control Page</h1>
-        <p>Here you can update the settings on your devices.</p>
+        <h1 class="is-size-1 has-text-centered">Welcome to the Device Control Page</h1>
+        <div class="columns mt-4">
+            <div class="column"></div>
+            <div class="column is-four-fifths box">
+                <div class="block">
+                    <p class="is-size-4">Here you can update the settings on your devices.</p>
 
-        <h2>Select a device</h2>
-        <form method="POST" action="/device-updated">
-            <div id="device">
-            <% if(devices != undefined || devices != null){ %>
-                <label for="device_name">Select the device</label>
-                <select name="device_name" onchange="showOptions(this.value)">
-                    <option value=""></option>
-                    <% const seen = {};
-                    devices.filter((device)=>{
-                        return seen.hasOwnProperty(device.deviceName) ? false : (seen[device.deviceName] = true);
-                    }).forEach((device) => { %>
-                        <option value="<%= device.deviceName %>"><%= device.deviceName %></option>
+                    <form method="POST" action="/device-updated">
+                        <div id="device" class="field">
+                        <% if(devices != undefined || devices != null){ %>
+                            <label for="device_name" class="is-size-5">Select the device</label>
+                            <br>
+                            <div class="field">
+                                <select name="device_name" onchange="showOptions(this.value)" class="select is-medium">
+                                    <option value=""></option>
+                                    <% const seen = {};
+                                    devices.filter((device)=>{
+                                        return seen.hasOwnProperty(device.deviceName) ? false : (seen[device.deviceName] = true);
+                                    }).forEach((device) => { %>
+                                        <option value="<%= device.deviceName %>"><%= device.deviceName %></option>
 
-            <% })}else{ %>
-                <p>There was a problem. Please reload the page.</p>
-            <% } %>
-            </select>
+                            <% })}else{ %>
+                                <p>There was a problem. Please reload the page.</p>
+                            <% } %>
+                            </select>
+                        </div>
+                        </div>
+
+
+                        <div  id="on_switch" class="field" hidden>
+                            <input id="on_off" type="checkbox" class="switch" name="on_off">
+                            <label for="on_off">On</label>
+                        </div>
+
+                        <div id="living_temperature" class="field" hidden>
+                            <input type="number"
+                                name="living_temperature"
+                                min="<%= functions[1].rangeStart %>"
+                                max="<%= functions[1].rangeEnd %>"
+                            >
+                            <label for="living_temperature">Desired Temperature &#176;C</label>
+                        </div>
+
+                        <div id="open" class="field" hidden>
+                            <input id="open_closed" type="checkbox" class="switch" name="open_closed">
+                            <label for="open_closed">Open</label>
+                        </div>
+
+                        <div id="fridge_temp" class="field" hidden>
+                            <input type="number"
+                                name="fridge_temp"
+                                min="<%= functions[3].rangeStart %>"
+                                max="<%= functions[3].rangeEnd %>"
+                            >
+                            <label for="fridge_temp">Desired Temperature &#176;C</label>
+                        </div>
+
+                        <div id="freezer_temp" class="field" hidden>
+                            <input type="number"
+                                name="freezer_temp"
+                                min="<%= functions[4].rangeStart %>"
+                                max="<%= functions[4].rangeEnd %>"
+                            >
+                            <label for="freezer_temp">Desired Temperature &#176;C</label>
+                        </div>
+
+                        <div id="volume" class="field" hidden>
+                            <input type="number"
+                                name="volume"
+                                min="<%= functions[5].rangeStart %>"
+                                max="<%= functions[5].rangeEnd %>"
+                            >
+                            <label for="volume">Volume %</label>
+                        </div>
+
+                        <div id="modulation" class="field" hidden>
+                            <input id="am_fm" type="checkbox" class="switch" name="am_fm">
+                            <label for="am_fm">AM/FM</label>
+                        </div>
+                        
+                        <div id="station" class="field" hidden>
+                            <input type="number"
+                                name="station"
+                                min="<%= functions[7].rangeStart %>"
+                                max="<%= functions[7].rangeEnd %>"
+                                step="0.1"
+                            >
+                            <label for="station">Station</label>
+                        </div>
+
+                        <div id="channel" class="field" hidden>
+                            <input type="number"
+                                name="channel"
+                                min="<%= functions[8].rangeStart %>"
+                                max="<%= functions[8].rangeEnd %>"
+                            >
+                            <label for="channel">Channel</label>
+                        </div>
+
+                        <div id="watts" class="field" hidden>
+                            <input type="number"
+                                name="watts"
+                                min="<%= functions[9].rangeStart %>"
+                                max="<%= functions[9].rangeEnd %>"
+                                step="25"
+                            >
+                            <label for="watts">watts</label>
+                        </div>
+
+                        <div id="submit" class="field" hidden>
+                            <input type="submit" value="Ok" class="button is-primary">
+                        </div>
+
+                    </form>
+                </div>
             </div>
-
-
-            <div id="on_off" hidden>
-            <label for="on_off">On/Off</label>
-            <input type="checkbox" name="on_off">
-            </div>
-
-            <div id="living_temperature" hidden>
-            <label for="living_temperature">Desired Temperature &#176;C</label>
-            <input type="number"
-                   name="living_temperature"
-                   min="<%= functions[1].rangeStart %>"
-                   max="<%= functions[1].rangeEnd %>"
-            >
-            </div>
-
-            <div id="open_closed" hidden>
-            <label for="open_closed">Open/Closed</label>
-            <input type="checkbox" name="open_closed">
-            </div>
-
-            <div id="fridge_temp"hidden>
-            <label for="fridge_temp">Desired Temperature &#176;C</label>
-            <input type="number"
-                   name="fridge_temp"
-                   min="<%= functions[3].rangeStart %>"
-                   max="<%= functions[3].rangeEnd %>"
-            >
-            </div>
-
-            <div id="freezer_temp" hidden>
-            <label for="freezer_temp">Desired Temperature &#176;C</label>
-            <input type="number"
-                   name="freezer_temp"
-                   min="<%= functions[4].rangeStart %>"
-                   max="<%= functions[4].rangeEnd %>"
-            >
-            </div>
-
-            <div id="volume" hidden>
-            <label for="volume">Volume %</label>
-            <input type="number"
-                   name="volume"
-                   min="<%= functions[5].rangeStart %>"
-                   max="<%= functions[5].rangeEnd %>"
-            >
-            </div>
-
-            <div id="am_fm" hidden>
-            <label for="am_fm">AM/FM</label>
-            <input type="checkbox" name="am_fm">
-            </div>
-            
-            <div id="station" hidden>
-            <label for="station">Station</label>
-            <input type="number"
-                   name="station"
-                   min="<%= functions[7].rangeStart %>"
-                   max="<%= functions[7].rangeEnd %>"
-                   step="0.1"
-            >
-            </div>
-
-            <div id="channel" hidden>
-            <label for="channel">Channel</label>
-            <input type="number"
-                   name="channel"
-                   min="<%= functions[8].rangeStart %>"
-                   max="<%= functions[8].rangeEnd %>"
-            >
-            </div>
-
-            <div id="watts" hidden>
-            <label for="watts">watts</label>
-            <input type="number"
-                   name="watts"
-                   min="<%= functions[9].rangeStart %>"
-                   max="<%= functions[9].rangeEnd %>"
-                   step="25"
-            >
-            </div>
-
-            <div id="submit" hidden>
-                <input type="submit" value="Ok">
-            </div>
-
-        </form>
+            <div class="column"></div>
+        </div>
     </main>
 
-    <footer>
-        <%- include('./partials/footer'); %>
-    </footer>
+    <%- include('./partials/footer'); %>
+
 
 </body>

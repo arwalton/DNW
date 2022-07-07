@@ -3,24 +3,32 @@
     <%- include('./partials/head'); %>
 </head>
 
-<body>
-    <header>
-        <%- include('./partials/header'); %>
-    </header>
+<body class="has-navbar-fixed-top">
+    <%- include('./partials/header'); %>
 
     <main>
-        <h1>About DNW Smart Home Control Panel</h1>
-        <p>
-            DNW stands for Databases, Networks, the Web. It is one of the level 5
-            classes in the University of London Computer Science BS degree. This
-            project was completed for the midterm requirements of that class.
-
-            Developer: Adam Walton
-        </p>
+        <h1 class="is-size-1 has-text-centered">About DNW Smart Home Control Panel</h1>
+        <div class="columns mt-4">
+            <div class="column"></div>
+            <div class="column is-four-fifths box">
+                <div class="block">
+                    <p class="is-size-4">
+                        DNW stands for Databases, Networks, the Web. It is one of the level 5
+                        classes in the University of London Computer Science BS degree. This
+                        project was completed for the midterm requirements of that class.
+                    </p>
+                </div>
+                <div class="block">
+                    <p class="is-size-5">
+                        Developer: Adam Walton
+                    </p>
+                </div>
+            </div>
+            <div class="column"></div>
+        </div>
     </main>
 
-    <footer>
-        <%- include('./partials/footer'); %>
-    </footer>
+
+    <%- include('./partials/footer'); %>
 
 </body>

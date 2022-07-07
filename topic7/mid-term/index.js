@@ -32,6 +32,12 @@ app.use(function (req, res, next) {
 // Add a static folder called public to App
 app.use(express.static( "public" ));
 
+// Add a static stylesheet
+app.use("/bulma", express.static(__dirname + '/node_modules/bulma/css/'));
+
+// Add an extension to the stylesheet
+app.use("/bulma-extensions", express.static(__dirname + '/node_modules/bulma-extensions/dist/css'));
+
 // Set the app to use body-parser
 app.use(bodyParser.urlencoded({extended: true}));
 

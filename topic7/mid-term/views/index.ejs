@@ -3,33 +3,38 @@
     <%- include('./partials/head'); %>
 </head>
 
-<body>
-    <header>
-        <%- include('./partials/header'); %>
-    </header>
+<body class="has-navbar-fixed-top">
+    <%- include('./partials/header'); %>
 
     <main>
-        <h1>Welcome to the DNW Smart Home Control Panel</h1>
-        <p>From here you can control all of the smart devices in your home.</p>
-        <h2>What would you like to do today?</h2>
-        <ul>
-            <li>
-                Add a new device
-            </li>
-            <li>
-                Check the status of a devices
-            </li>
-            <li>
-                Remotely control a device
-            </li>
-            <li>
-                Remove a device from your Smart Home
-            </li>
-        </ul>
+        <h1 class="is-size-1 has-text-centered">Welcome to the DNW Smart Home Control Panel</h1>
+        <div class="columns mt-4">
+            <div class="column"></div>
+            <div class="column is-four-fifths box">
+                <div class="block">
+                    <p>From here you can control all of the smart devices in your home.</p>
+                    <h2>What would you like to do today?</h2>
+                    <ul>
+                        <li>
+                            Add a new device
+                        </li>
+                        <li>
+                            Check the status of a devices
+                        </li>
+                        <li>
+                            Remotely control a device
+                        </li>
+                        <li>
+                            Remove a device from your Smart Home
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="column"></div>
+        </div>
     </main>
 
-    <footer>
-        <%- include('./partials/footer'); %>
-    </footer>
+    <%- include('./partials/footer'); %>
+
 
 </body>

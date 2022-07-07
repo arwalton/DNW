@@ -3,20 +3,25 @@
     <%- include('./partials/head'); %>
 </head>
 
-<body>
-    <header>
-        <%- include('./partials/header'); %>
-    </header>
+<body class="has-navbar-fixed-top">
+    <%- include('./partials/header'); %>
 
     <main>
-        <h1>Device Added!</h1>
-        <p>
-            You have successfully added your device to the DNW Smart Home Control Panel!
-        </p>
+        <h1 class="is-size-1 has-text-centered">Device Added!</h1>
+        <div class="columns mt-4">
+            <div class="column"></div>
+            <div class="column is-four-fifths box">
+                <div class="block">
+                    <p>
+                        You have successfully added your device to the DNW Smart Home Control Panel!
+                    </p>
+                </div>
+            </div>
+            <div class="column"></div>
+        </div>
     </main>
 
-    <footer>
-        <%- include('./partials/footer'); %>
-    </footer>
+
+    <%- include('./partials/footer'); %>
 
 </body>

@@ -30,6 +30,7 @@ module.exports = (app) => {
         // Execute query
         db.query(sqlQuery, (err,result) => {
             if(err){
+                console.log("Error" + err);
                 res.redirect("/");
             }
             // Convert data to useable format
@@ -62,6 +63,7 @@ module.exports = (app) => {
     ///////////////////////////////////////////
     //Success page when device has been successfully added route
     app.post("/device-added", (req,res)=>{
+        console.log(req.body);
         // Create sql query
         const functions = [];
         if(!req.body['on_off']){
@@ -69,9 +71,22 @@ module.exports = (app) => {
         }else{
             functions.push('on_off', 1);
         }
+        if(!req.body['open_closed'] && (req.body['device_type'] == 'Curtains' || req.body['device_type'] == "Blinds")){
+            functions.push('open_closed', 0);
+        }else if(req.body['device_type'] == 'Curtains' || req.body['device_type'] == "Blinds"){
+            functions.push('open_closed', 1);
+        }
+
+        if(!req.body['am_fm'] && req.body['device_type'] == 'Radio'){
+            functions.push('am_fm', 0);
+        }else if (req.body['device_type'] == 'Radio'){
+            functions.push('am_fm', 1);
+        }
+
+
         // Get device functions and values
         Object.keys(req.body).forEach(key => {
-            if(key != 'device_name' && key != 'device_type' && key != 'on_off'){
+            if(key != 'device_name' && key != 'device_type' && key != 'on_off' && key != 'open_closed' && key != 'am_fm'){
                 if(req.body[key] != ''){
                     functions.push(key, req.body[key]);
                 }
@@ -94,7 +109,7 @@ module.exports = (app) => {
         // Execute query
         db.query(sqlQuery,(err, result)=>{
             if(err){
-                res.redirect(404, "/");
+                res.redirect("/");
             }else{
                 res.render("device-added.ejs");
             }
@@ -151,7 +166,6 @@ module.exports = (app) => {
                 let json = JSON.parse(myStr);
                 return json;
             })
-            console.log(data)
             res.render("device-status.ejs",{
                 functions: data
             });
@@ -223,7 +237,6 @@ module.exports = (app) => {
                 }
             }
         });
-        console.log(functions);
 
         // Create SQL query to update each function of the device
         let sqlQuery = "";
